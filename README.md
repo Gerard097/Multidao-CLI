@@ -29,7 +29,6 @@ USAGE
 # Commands
 <!-- commands -->
 * [`multidao create [FILE]`](#multidao-create-file)
-* [`multidao hello [FILE]`](#multidao-hello-file)
 * [`multidao help [COMMAND]`](#multidao-help-command)
 * [`multidao propose [FILE]`](#multidao-propose-file)
 
@@ -50,26 +49,6 @@ EXAMPLE
 ```
 
 _See code: [src/commands/create.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/create.ts)_
-
-## `multidao hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ multidao hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ multidao hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/hello.ts)_
 
 ## `multidao help [COMMAND]`
 

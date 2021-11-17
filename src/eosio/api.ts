@@ -1,3 +1,5 @@
+import { Params } from "../util/yaml";
+
 const fs = require('fs');
 const fetch = require('cross-fetch');
 const { TextDecoder, TextEncoder } = require('util');
@@ -21,16 +23,16 @@ return new Api({
 });
 }
 
-const Types = {
+export const Types = {
   Int: 'int64',
   String: 'string',
   Checksum: 'checksum256',
   Asset: 'asset',
   Name: 'name',
   TimePoint: 'time_point',
-} 
+}
 
-const getItem = (label: string, value: any, type=Types.String) => (
+export const getItem = (label: string, value: any, type=Types.String) => (
   {
     "label": label,
     "value": [
@@ -39,6 +41,15 @@ const getItem = (label: string, value: any, type=Types.String) => (
     ]
   }
 )
+
+export const buildContentGroups = (params: Params) => {
+
+  return [[
+    getItem('content_group_label', 'details', Types.String),
+    ...Object.entries(params)
+          .map(([key, param]) => getItem(key, param.value, param.type))
+  ]]
+}
 
 export const runAction = async (api: any, action: string, account: string, data: any) => {
 
