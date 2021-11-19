@@ -47,7 +47,7 @@ export const readYAML = (file: string, requiredParams: Params): [Params, string[
     let params: Params = {};
 
     if (path.extname(file) != '.yaml') {
-        throw new CLIError('Expected file extension to be .yaml');
+        throw new CLIError('Expected file extension to be .yaml [' + file + ']');
     }
         
     let yamlObj = yaml.load(readFileSync(file, 'utf8'));
@@ -63,7 +63,8 @@ export const readYAML = (file: string, requiredParams: Params): [Params, string[
     }
 
     const readedKeys = Object.keys(params);
-    //Check
+    
+    //Check for missing parameters
     const missing = Object.keys(requiredParams).filter((key) => {
         return readedKeys.indexOf(key) === -1 || 
                params[key].value === null;

@@ -1,4 +1,5 @@
 import { Params } from "../util/yaml";
+import { DGDocument } from "./document";
 
 const fs = require('fs');
 const fetch = require('cross-fetch');
@@ -17,7 +18,7 @@ const rpc = new JsonRpc(
 export function getApi(key: string) { 
 return new Api({
     rpc,
-    JsSignatureProvider: getSignatureProvider(key),
+    signatureProvider: getSignatureProvider(key),
     textDecoder: new TextDecoder(),
     textEncoder: new TextEncoder()
 });
@@ -42,6 +43,63 @@ export const getItem = (label: string, value: any, type=Types.String) => (
   }
 )
 
+export const getEdgesFromWithName = async () => {
+  let edges = [];
+
+  await rpc.get_table_rows({
+    json: true,               // Get the response as json
+    code: 'mtdhoxhyphaa',      // Contract that we target
+    scope: 'mtdhoxhyphaa',         // Account that owns the data
+    table: 'edges',        // Table name
+    limit: 100,                // Maximum number of rows that we want to get
+    reverse: false,           // Optional: Get reversed data
+    show_payer: false,          // Optional: Show ram payer 
+  });
+}
+
+export const getDocuments = async ({ limit } = { limit: 100 }): Promise<any[]> => {
+
+  let readDocs: any[] = [];
+
+  let moreDocs = true;
+  let nextKey: any = undefined;
+
+  while(moreDocs && (limit === -1 || readDocs.length < limit)) {
+
+    const { rows, more, next_key } = await rpc.get_table_rows({
+      json: true,               // Get the response as json
+      code: 'mtdhoxhyphaa',      // Contract that we target
+      scope: 'mtdhoxhyphaa',         // Account that owns the data
+      table: 'documents',        // Table name
+      limit: 100,                // Maximum number of rows that we want to get
+      reverse: false,           // Optional: Get reversed data
+      show_payer: false,          // Optional: Show ram payer
+      lower_bound: nextKey 
+    });
+
+    nextKey = next_key;
+
+    moreDocs = more;
+
+    let remaining = limit - readDocs.length;
+
+    if (limit !== -1 && rows.length > remaining) {
+      rows.length = remaining;
+    }
+    
+    readDocs = readDocs.concat(rows);
+  }
+
+  return readDocs;
+}
+
+type DocumentTypes = "assignment" | "dao" | "role" | "settings";
+
+export const getDocumentsOfType = (type: DocumentTypes, documents: any[]) => {
+  return documents.map((d) => new DGDocument(d))
+                  .filter((doc: DGDocument) => doc.getDocumentType() === type)
+}
+
 export const buildContentGroups = (params: Params) => {
 
   return [[
@@ -51,7 +109,7 @@ export const buildContentGroups = (params: Params) => {
   ]]
 }
 
-export const runAction = async (api: any, action: string, account: string, data: any) => {
+export const runAction = (api: any, action: string, account: string, data: any) => {
 
   return api.transact({
     actions: [{
@@ -69,6 +127,52 @@ export const runAction = async (api: any, action: string, account: string, data:
   });
 }
 
+export const runActionUnauth = (api: any, action: string, data: any) => {
+
+  return api.transact({
+    actions: [{
+      account: 'mtdhoxhyphaa',
+      name: action,
+      authorization: [],
+      data: data,
+    }]
+  }, {
+    blocksBehind: 3,
+    expireSeconds: 30,
+  });
+}
+
+export const closeProposal = (api: any, closer: string, proposal_hash: string) => {
+  return runAction(api, 'closedocprop', closer, { proposal_hash })
+}
+
+export const createDAO = (api: any, account: string, config: Params) => {
+  return runAction(api, 'createdao', account, {
+    config: buildContentGroups(config)
+  })
+}
+
+export const createProposal = (api: any, 
+                               dao_hash: string, 
+                               proposer: string,
+                               proposal_type: string,
+                               proposal_info: Params) => {
+  return runAction(api, 'propose', proposer, {
+    dao_hash,
+    proposer,
+    proposal_type,
+    content_groups: buildContentGroups(proposal_info)
+  });
+}
+
+export const castVote = (api: any, voter: string, proposal_hash: string, vote: string, notes?: string) => {
+  return runAction(api, 'vote', voter, {
+    voter,
+    proposal_hash,
+    vote,
+    notes: notes ?? " "
+  })
+}
 
 // import { Link } from 'anchor-link'
 // import { ConsoleTransport } from 'anchor-link-console-transport'
@@ -88,7 +192,7 @@ export const runAction = async (api: any, action: string, account: string, data:
 
 //     const action = {
 //         account: 'mtdhoxhyphaa',
-//         name: 'closedocpro',
+//         name: 'closedocprop',
 //         authorization: [
 //             {
 //                 actor: '............1', // ............1 will be resolved to the signing accounts name

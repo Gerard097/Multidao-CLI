@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
 import { writeFileSync } from 'fs'
-import { buildContentGroups, Types } from '../eosio/api'
+import { buildContentGroups, createProposal, getApi, Types } from '../eosio/api'
 import { getAuthFlag } from '../util/flags'
-import { Params, paramsToYAML, readYAML } from '../util/yaml'
+import { Params, paramsToYAML, readAccountYAML, readYAML } from '../util/yaml'
 
 export default class Propose extends Command {
   static description = 'Creates a proposal document for an specific dao'
@@ -17,11 +17,6 @@ export default class Propose extends Command {
       description: 'If specified, creates a template with the required parameters for the proposal type in the specified file'
     }),
     auth: getAuthFlag()
-    // key: flags.string({
-    //   char: 'k',
-    //   default: '.key',
-    //   description: 'File containing the account key'
-    // })
   }
 
   static args = [
@@ -166,7 +161,18 @@ export default class Propose extends Command {
                    missing.reduce((p, item) => p + "\n- " + item, ""), { exit: -1 });
       }
 
-      this.log(JSON.stringify(buildContentGroups(params)), missing);
+      const { name, private_key } = readAccountYAML(auth);
+
+      const api = getApi(private_key);
+
+      try {
+        let result = await createProposal(api, dao, name, type, params);
+
+        this.log("Proposal Created succesfully", result);
+      }
+      catch(error) {
+        this.error('Error while creating proposal:' + error, { exit: -1 });
+      }      
     }
   }
 }

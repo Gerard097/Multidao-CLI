@@ -1,7 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import { buildContentGroups, runAction, Types } from '../eosio/api'
+import { createDAO, getApi, Types } from '../eosio/api'
 import { writeFileSync } from 'fs'
-import { Params, paramsToYAML, readYAML } from '../util/yaml';
+import { Params, paramsToYAML, readAccountYAML, readYAML } from '../util/yaml';
 import { getAuthFlag } from '../util/flags';
 
 export default class Create extends Command {
@@ -132,7 +132,19 @@ export default class Create extends Command {
                    missing.reduce((p, item) => p + "\n- " + item, ""), { exit: -1 });
       }
 
-      this.log(JSON.stringify(buildContentGroups(params)), missing);
+      const { name, private_key } = readAccountYAML(auth);
+
+      const api = getApi(private_key);
+
+      try {
+        let result = await createDAO(api, name, params);
+
+        this.log("DAO Created succesfully", result);
+      }
+      catch(error) {
+        this.error('Error while creating DAO:' + error, { exit: -1 });
+      }
+      
     }
   }
 }

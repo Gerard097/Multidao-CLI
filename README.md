@@ -28,20 +28,47 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`multidao create [FILE]`](#multidao-create-file)
+* [`multidao close [FILE]`](#multidao-close-file)
+* [`multidao create FILE`](#multidao-create-file)
+* [`multidao get TYPE`](#multidao-get-type)
 * [`multidao help [COMMAND]`](#multidao-help-command)
-* [`multidao propose [FILE]`](#multidao-propose-file)
+* [`multidao propose TYPE FILE [DAO]`](#multidao-propose-type-file-dao)
+* [`multidao vote [VOTE] [PROPOSAL]`](#multidao-vote-vote-proposal)
 
-## `multidao create [FILE]`
+## `multidao close [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ multidao close [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/close.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/close.ts)_
+
+## `multidao create FILE`
 
 Creates a dao
 
 ```
 USAGE
-  $ multidao create [FILE]
+  $ multidao create FILE
+
+ARGUMENTS
+  FILE  File containing the DAO configuration variables or where the template will be generated if -g is specified
+        (YAML)
 
 OPTIONS
-  -f, --file=file  Configuration file (yaml)
+  -a, --auth=auth  File containing account and private-key used to sign the transactions
+
+  -g, --generate   If specified, creates a template with the required configuration variables for the dao in the
+                   specified file
+
   -h, --help       show CLI help
 
 EXAMPLE
@@ -49,6 +76,23 @@ EXAMPLE
 ```
 
 _See code: [src/commands/create.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/create.ts)_
+
+## `multidao get TYPE`
+
+Retreives a list of document types
+
+```
+USAGE
+  $ multidao get TYPE
+
+ARGUMENTS
+  TYPE  (assignment|role|dao|period) Type of the documents to list
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/get.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/get.ts)_
 
 ## `multidao help [COMMAND]`
 
@@ -67,19 +111,51 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.4/src/commands/help.ts)_
 
-## `multidao propose [FILE]`
+## `multidao propose TYPE FILE [DAO]`
 
-describe the command here
+Creates a proposal document for an specific dao
 
 ```
 USAGE
-  $ multidao propose [FILE]
+  $ multidao propose TYPE FILE [DAO]
+
+ARGUMENTS
+  TYPE  (assignment|role|contribution) Proposal type
+  FILE  File containing the proposal information or where the template will be generated if -g is specified
+  DAO   DAO where the proposal will be created
 
 OPTIONS
-  -f, --force
+  -a, --auth=auth  File containing account and private-key used to sign the transactions
+
+  -g, --generate   If specified, creates a template with the required parameters for the proposal type in the specified
+                   file
+
   -h, --help       show CLI help
-  -n, --name=name  name to print
+
+EXAMPLES
+  $ multidao propose -f assignment.yaml -a generate
+  $ multidao propose hypha -f assignment.yaml -a
 ```
 
 _See code: [src/commands/propose.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/propose.ts)_
+
+## `multidao vote [VOTE] [PROPOSAL]`
+
+Casts a vote to the specified proposal
+
+```
+USAGE
+  $ multidao vote [VOTE] [PROPOSAL]
+
+ARGUMENTS
+  VOTE      (pass|abstain|fail) Vote option
+  PROPOSAL  Hash of the proposal being voted on
+
+OPTIONS
+  -a, --auth=auth    (required) File containing account and private-key used to sign the transactions
+  -h, --help         show CLI help
+  -n, --notes=notes  Notes added to the vote
+```
+
+_See code: [src/commands/vote.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/vote.ts)_
 <!-- commandsstop -->
