@@ -10,6 +10,7 @@ interface Param {
     desc: string
     value: any
     type: string
+    optional?: boolean
 }
 
 export interface Params {
@@ -59,6 +60,10 @@ export const readYAML = (file: string, requiredParams: Params): [Params, string[
             continue;
         }
 
+        if (yamlObj[key] === null) {
+            continue;
+        }
+
         params[key] = { ...requiredParams[key], value: yamlObj[key] }
     }
 
@@ -66,8 +71,8 @@ export const readYAML = (file: string, requiredParams: Params): [Params, string[
     
     //Check for missing parameters
     const missing = Object.keys(requiredParams).filter((key) => {
-        return readedKeys.indexOf(key) === -1 || 
-               params[key].value === null;
+        return readedKeys.indexOf(key) === -1 && 
+               !requiredParams[key].optional;
     });
 
     return [params, missing];

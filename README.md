@@ -28,25 +28,28 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`multidao close [FILE]`](#multidao-close-file)
+* [`multidao close PROPOSAL`](#multidao-close-proposal)
 * [`multidao create FILE`](#multidao-create-file)
 * [`multidao get TYPE`](#multidao-get-type)
 * [`multidao help [COMMAND]`](#multidao-help-command)
+* [`multidao period [FILE]`](#multidao-period-file)
 * [`multidao propose TYPE FILE [DAO]`](#multidao-propose-type-file-dao)
-* [`multidao vote [VOTE] [PROPOSAL]`](#multidao-vote-vote-proposal)
+* [`multidao vote VOTE PROPOSAL`](#multidao-vote-vote-proposal)
 
-## `multidao close [FILE]`
+## `multidao close PROPOSAL`
 
-describe the command here
+Closes a proposal
 
 ```
 USAGE
-  $ multidao close [FILE]
+  $ multidao close PROPOSAL
+
+ARGUMENTS
+  PROPOSAL  Hash of the proposal to close
 
 OPTIONS
-  -f, --force
+  -a, --auth=auth  (required) File containing account and private-key used to sign the transactions
   -h, --help       show CLI help
-  -n, --name=name  name to print
 ```
 
 _See code: [src/commands/close.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/close.ts)_
@@ -111,6 +114,22 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.4/src/commands/help.ts)_
 
+## `multidao period [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ multidao period [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/period.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/period.ts)_
+
 ## `multidao propose TYPE FILE [DAO]`
 
 Creates a proposal document for an specific dao
@@ -139,13 +158,13 @@ EXAMPLES
 
 _See code: [src/commands/propose.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/propose.ts)_
 
-## `multidao vote [VOTE] [PROPOSAL]`
+## `multidao vote VOTE PROPOSAL`
 
 Casts a vote to the specified proposal
 
 ```
 USAGE
-  $ multidao vote [VOTE] [PROPOSAL]
+  $ multidao vote VOTE PROPOSAL
 
 ARGUMENTS
   VOTE      (pass|abstain|fail) Vote option

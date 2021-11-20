@@ -40,6 +40,6 @@ export default class Close extends Command {
     }
     catch(error) {
       this.error('Error while closing proposal:' + error, { exit: -1 });
-    }      
+    }
   }
 }

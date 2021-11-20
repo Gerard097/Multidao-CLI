@@ -15,7 +15,7 @@ export default class Vote extends Command {
 
   static args = [
     {
-      name: 'vote',
+      name: 'option',
       description: 'Vote option',
       options: ["pass", "abstain", "fail"],
       required: true
@@ -32,7 +32,7 @@ export default class Vote extends Command {
 
     const { auth, notes } = flags;
 
-    const { vote, proposal } = args;
+    const { option, proposal } = args;
 
     if (auth === undefined) {
       this.error('Auth file must be specified when voting on a proposal', { exit: -1 });
@@ -43,7 +43,7 @@ export default class Vote extends Command {
     try {
       const api = getApi(private_key);
 
-      let result = await castVote(api, name, proposal, vote, notes);
+      let result = await castVote(api, name, proposal, option, notes);
 
       this.log("Vote casted succesfully", result);
     }

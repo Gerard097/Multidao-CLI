@@ -66,9 +66,10 @@ export default class Propose extends Command {
         type: Types.Checksum
       },
       start_period: { 
-        desc: 'First claimable period of the assignmet (hash)', 
+        desc: 'First claimable period of the assignmet (hash). Leave blank to use the current period', 
         value: '',
-        type: Types.Checksum
+        type: Types.Checksum,
+        optional: true
       },
       period_count: { 
         desc: 'Number of claimable periods this assignment is valid for', 
@@ -172,7 +173,7 @@ export default class Propose extends Command {
       }
       catch(error) {
         this.error('Error while creating proposal:' + error, { exit: -1 });
-      }      
+      }
     }
   }
 }

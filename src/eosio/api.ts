@@ -142,6 +142,13 @@ export const runActionUnauth = (api: any, action: string, data: any) => {
   });
 }
 
+export const genPeriods = (api: any, issuer: string, dao_hash: string, period_count: number) => {
+  return runAction(api, 'genperiods', issuer, {
+    dao_hash,
+    period_count
+  })
+}
+
 export const closeProposal = (api: any, closer: string, proposal_hash: string) => {
   return runAction(api, 'closedocprop', closer, { proposal_hash })
 }
