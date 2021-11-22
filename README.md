@@ -28,13 +28,30 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`multidao assignment [FILE]`](#multidao-assignment-file)
 * [`multidao close PROPOSAL`](#multidao-close-proposal)
 * [`multidao create FILE`](#multidao-create-file)
 * [`multidao get TYPE`](#multidao-get-type)
 * [`multidao help [COMMAND]`](#multidao-help-command)
-* [`multidao period [FILE]`](#multidao-period-file)
+* [`multidao period DAO [ACTION]`](#multidao-period-dao-action)
 * [`multidao propose TYPE FILE [DAO]`](#multidao-propose-type-file-dao)
-* [`multidao vote VOTE PROPOSAL`](#multidao-vote-vote-proposal)
+* [`multidao vote OPTION PROPOSAL`](#multidao-vote-option-proposal)
+
+## `multidao assignment [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ multidao assignment [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/assignment.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/assignment.ts)_
 
 ## `multidao close PROPOSAL`
 
@@ -114,18 +131,24 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.4/src/commands/help.ts)_
 
-## `multidao period [FILE]`
+## `multidao period DAO [ACTION]`
 
-describe the command here
+Utility actions related to periods
 
 ```
 USAGE
-  $ multidao period [FILE]
+  $ multidao period DAO [ACTION]
+
+ARGUMENTS
+  DAO     Specify the DAO to which the actions will be applied
+
+  ACTION  (generate) Action to perform.
+          - generate: Generates the specified number of periods
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -a, --auth=auth                  File containing account and private-key used to sign the transactions
+  -c, --period_count=period_count  Used along "generate", number of periods to generate
+  -h, --help                       show CLI help
 ```
 
 _See code: [src/commands/period.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/period.ts)_
@@ -158,16 +181,16 @@ EXAMPLES
 
 _See code: [src/commands/propose.ts](https://github.com/Gerard097/multidao/blob/v0.0.0/src/commands/propose.ts)_
 
-## `multidao vote VOTE PROPOSAL`
+## `multidao vote OPTION PROPOSAL`
 
 Casts a vote to the specified proposal
 
 ```
 USAGE
-  $ multidao vote VOTE PROPOSAL
+  $ multidao vote OPTION PROPOSAL
 
 ARGUMENTS
-  VOTE      (pass|abstain|fail) Vote option
+  OPTION    (pass|abstain|fail) Vote option
   PROPOSAL  Hash of the proposal being voted on
 
 OPTIONS

@@ -149,6 +149,10 @@ export const genPeriods = (api: any, issuer: string, dao_hash: string, period_co
   })
 }
 
+export const claimAssignment = (api: any, claimer: string, assignment_hash: string) => {
+  return runAction(api, 'claimnextper', claimer, { assignment_hash });
+}
+
 export const closeProposal = (api: any, closer: string, proposal_hash: string) => {
   return runAction(api, 'closedocprop', closer, { proposal_hash })
 }
