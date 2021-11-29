@@ -8,7 +8,9 @@ export default class Assignment extends Command {
 
   static flags = {
     help: flags.help({char: 'h'}),
-    auth: getAuthFlag(true)
+    auth: getAuthFlag(true),
+    deferral: flags.integer({ char: 'd', description: 'New deferral percentage for the assignment'}),
+    commitment: flags.integer({ char: 'c', description: 'New commitment percentage for the assignment'}),
   }
 
   static args = [
@@ -48,6 +50,7 @@ export default class Assignment extends Command {
           result = await claimAssignment(api, name, assignment);
           this.log("Period claimed succesfully", result);
         }
+        break;
         default: 
          throw new Error('Unknown action to perform:' + action);
       }

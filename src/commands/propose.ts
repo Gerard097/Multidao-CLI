@@ -34,7 +34,7 @@ export default class Propose extends Command {
     {
       name: 'dao',
       required: false,
-      description: 'DAO where the proposal will be created',
+      description: 'Hash of the DAO where the proposal will be created',
     },
   ]
 
@@ -61,7 +61,7 @@ export default class Propose extends Command {
         type: Types.Name
       },
       role: { 
-        desc: 'Base archetype of the assingment (hash)', 
+        desc: 'Hash of the base archetype of the assingment (hash)', 
         value: '',
         type: Types.Checksum
       },

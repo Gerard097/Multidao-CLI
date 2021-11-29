@@ -153,6 +153,12 @@ export const claimAssignment = (api: any, claimer: string, assignment_hash: stri
   return runAction(api, 'claimnextper', claimer, { assignment_hash });
 }
 
+export const adjustDeferral = (api: any, issuer: string, assignment_hash: string, new_deferred_perc_x100: number) => {
+  return runAction(api, 'adjustdeferr', issuer, { issuer, assignment_hash, new_deferred_perc_x100 });
+}
+
+
+
 export const closeProposal = (api: any, closer: string, proposal_hash: string) => {
   return runAction(api, 'closedocprop', closer, { proposal_hash })
 }
