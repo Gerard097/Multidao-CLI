@@ -24,7 +24,7 @@ export default class Propose extends Command {
       name: 'type',
       required: true,
       description: 'Proposal type',
-      options: ['assignment', 'role', 'contribution']
+      options: ['assignment', 'role', 'payout', 'badge', 'assignbadge']
     },
     {
       name: 'file',
@@ -114,16 +114,107 @@ export default class Propose extends Command {
         type: Types.Asset
       }
     },
-    contribution: { 
-      
+    payout: { 
+      title: { 
+        desc: 'Title of the payout', 
+        value: '',
+        type: Types.String
+      },
+      description: { 
+        desc: 'Description of the payout', 
+        value: '',
+        type: Types.String
+      },
+      recipient: {
+        desc: 'Account receiving the payout',
+        value: '',
+        type: Types.Name
+      },
+      voice_amount: {
+        desc: 'Amount of voice tokens to include in the payout',
+        value: '',
+        type: Types.Asset,
+        optional: true
+      },
+      reward_amount: {
+        desc: 'Amount of reward tokens to include in the payout',
+        value: '',
+        type: Types.Asset,
+        optional: true
+      },
+      peg_amount: {
+        desc: 'Amount of peg tokens to include in the payout',
+        value: '',
+        type: Types.Asset,
+        optional: true
+      }
     },
-  }
-
-  checkParameters(type: ['assignment', 'role', 'contribution'], params: any) {
-    
-    //TODO: Iterate all parameters and check if any is missing and mark it.
-
-    return false;
+    badge: {
+      title: { 
+        desc: 'Title of the Badge', 
+        value: '',
+        type: Types.String
+      },
+      description: { 
+        desc: 'Description of the Badge', 
+        value: '',
+        type: Types.String
+      },
+      icon: { 
+        desc: "URL of the Badge's icon", 
+        value: '',
+        type: Types.String
+      },
+      voice_coefficient_x10000: {
+        desc: 'Voice coefficient/multiplier (10000 = 1)',
+        value: '10000',
+        type: Types.Int
+      },
+      reward_coefficient_x10000: {
+        desc: 'Reward coefficient/multiplier (10000 = 1)',
+        value: '10000',
+        type: Types.Int
+      },
+      peg_coefficient_x10000: {
+        desc: 'Peg coefficient/multiplier (10000 = 1)',
+        value: '10000',
+        type: Types.Int
+      },
+    },
+    assignbadge: {
+      title: { 
+        desc: 'Title of the Badge assginment',
+        value: '',
+        type: Types.String
+      },
+      description: { 
+        desc: 'Description of the Badge assignment', 
+        value: '',
+        type: Types.String
+      },
+      badge: {
+        desc: 'Hash of the badge to apply for',
+        value: '',
+        type: Types.Checksum
+      },
+      assignee: { 
+        desc: 'Account that applies for the badge (must be a member of the DAO) ', 
+        value: '',
+        type: Types.Name
+      },
+      start_period: { 
+        desc: 'Hash of the first claimable period of the badge assignmet. Leave blank to use the current period', 
+        value: '',
+        type: Types.Checksum,
+        optional: true
+      },
+      period_count: { 
+        desc: 'Number of claimable periods this badge assignment is valid for. Leave blank to use default (13)', 
+        value: '',
+        type: Types.Int,
+        optional: true
+      },
+    }
   }
 
   async run() {

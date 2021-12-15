@@ -39,9 +39,13 @@ export default class Get extends Command {
       let docs = getDocumentsOfType(type, await getDocuments({ limit: 200 }));
 
       if (docs.length > 0) {
-        this.log('------------------------------------');
-        docs.forEach(doc => this.log(doc.getString(["details"])));
-        this.log('------------------------------------')
+        docs.forEach((doc, idx) => {
+          if (idx === 0) {
+            this.log('------------------------------------------------------------------------');
+          }
+          this.log(doc.getString(["details"]))
+          this.log('------------------------------------------------------------------------')
+        });
       }
       else {
         this.log("There are no documents of type:", type)
