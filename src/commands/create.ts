@@ -93,6 +93,16 @@ export default class Create extends Command {
       desc: 'Account used as the owner of the DAO and onboarder',
       type: Types.Name
     },
+    "voice_token_decay_period": { 
+      value: '', 
+      desc: 'Voice token decay period',
+      type: Types.Int
+    },
+    "voice_token_decay_per_period_x10M": { 
+      value: '', 
+      desc: 'Voice token decay period',
+      type: Types.Int
+    },
   }
 
   checkParameters(params: any) {

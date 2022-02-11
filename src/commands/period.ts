@@ -15,7 +15,7 @@ export default class Period extends Command {
   static args = [
     {
       name: 'dao',
-      description: 'Specify the DAO to which the actions will be applied',
+      description: 'Specify the DAO id to which the actions will be applied',
       required: true
     },
     {

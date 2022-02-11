@@ -142,9 +142,9 @@ export const runActionUnauth = (api: any, action: string, data: any) => {
   });
 }
 
-export const genPeriods = (api: any, issuer: string, dao_hash: string, period_count: number) => {
+export const genPeriods = (api: any, issuer: string, dao_id: string, period_count: number) => {
   return runAction(api, 'genperiods', issuer, {
-    dao_hash,
+    dao_id,
     period_count
   })
 }

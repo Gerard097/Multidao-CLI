@@ -96,7 +96,7 @@ export const readAccountYAML = (file: string): Account => {
     }
 
     if (!(yamlObj as Object).hasOwnProperty('private_key')) {
-        throw new CLIError("Missing variable 'key'");
+        throw new CLIError("Missing variable 'private_key'");
     }
 
     return { name: yamlObj.name, private_key: yamlObj.private_key };

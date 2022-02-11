@@ -21,11 +21,13 @@ export class DGDocument {
     content_groups: Array<ContentGroup>;
     hash: string;
     created_date: string;
+    id: string;
 
     constructor(document: any) {
         this.content_groups = document.content_groups;
         this.hash = document.hash;
         this.created_date = document.created_date;
+        this.id = document.id;
     }
 
     getGroupLabel(group: ContentGroup): string {
@@ -72,11 +74,13 @@ export class DGDocument {
 
     getString(groups: string[]) {
         return (
-`Hash: ${this.hash}
+`
+ID: ${this.id}
+Hash: ${this.hash}
 Created: ${this.created_date}
 Content {
 ${this.content_groups.map((group) => {
-if (groups.includes(this.getGroupLabel(group))) {
+if (groups.includes("*") || groups.includes(this.getGroupLabel(group))) {
 return `${this.getGroupString(group)}\n` 
 }
 return '';

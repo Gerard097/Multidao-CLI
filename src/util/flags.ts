@@ -7,3 +7,11 @@ export const getAuthFlag = (required = false) => {
         required
     });
 }
+
+export const getConfigFileFlag = () => {
+    return flags.string({
+        description: "Path to the configuration file, defaults to config.yaml",
+        default: "config.yaml",
+        char: "F"
+    });
+}

@@ -14,6 +14,7 @@
     "anchor-link": "^3.3.4",
     "anchor-link-console-transport": "^1.0.0",
     "cross-fetch": "^3.1.4",
+    "dgraph-js-http": "^21.3.1",
     "eosjs": "^22.1.0",
     "js-yaml": "^4.1.0",
     "tslib": "^1"

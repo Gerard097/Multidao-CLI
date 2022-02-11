@@ -17,7 +17,7 @@ export default class Get extends Command {
     {
       name: 'type',
       description: "Type of the documents to list",
-      options: ['assignment', 'role', 'dao', 'period'],
+      options: ['assignment', 'role', 'dao', 'period', 'vote', 'payout', 'badge', 'assignbadge', 'dho', 'settings'],
       required: true
     }
   ]
@@ -43,7 +43,7 @@ export default class Get extends Command {
           if (idx === 0) {
             this.log('------------------------------------------------------------------------');
           }
-          this.log(doc.getString(["details"]))
+          this.log(doc.getString(["*"]))
           this.log('------------------------------------------------------------------------')
         });
       }
