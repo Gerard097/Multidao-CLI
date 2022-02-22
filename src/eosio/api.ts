@@ -159,8 +159,8 @@ export const adjustDeferral = (api: any, issuer: string, assignment_hash: string
 
 
 
-export const closeProposal = (api: any, closer: string, proposal_hash: string) => {
-  return runAction(api, 'closedocprop', closer, { proposal_hash })
+export const closeProposal = (api: any, closer: string, proposal_id: string) => {
+  return runAction(api, 'closedocprop', closer, { proposal_id })
 }
 
 export const createDAO = (api: any, account: string, config: Params) => {
@@ -170,22 +170,22 @@ export const createDAO = (api: any, account: string, config: Params) => {
 }
 
 export const createProposal = (api: any, 
-                               dao_hash: string, 
+                               dao_id: string, 
                                proposer: string,
                                proposal_type: string,
                                proposal_info: Params) => {
   return runAction(api, 'propose', proposer, {
-    dao_hash,
+    dao_id,
     proposer,
     proposal_type,
     content_groups: buildContentGroups(proposal_info)
   });
 }
 
-export const castVote = (api: any, voter: string, proposal_hash: string, vote: string, notes?: string) => {
+export const castVote = (api: any, voter: string, proposal_id: string, vote: string, notes?: string) => {
   return runAction(api, 'vote', voter, {
     voter,
-    proposal_hash,
+    proposal_id,
     vote,
     notes: notes ?? " "
   })
