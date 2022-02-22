@@ -34,13 +34,13 @@ export default class Propose extends Command {
     {
       name: 'dao',
       required: false,
-      description: 'Hash of the DAO where the proposal will be created',
+      description: 'ID of the DAO where the proposal will be created',
     },
   ]
 
   static examples = [
     `$ multidao propose -f assignment.yaml -a generate`,
-    `$ multidao propose hypha -f assignment.yaml -a`,
+    `$ multidao propose 312 -f assignment.yaml -a`,
   ]
   
   static generateParams: { [key:string]: Params } = {
@@ -61,14 +61,14 @@ export default class Propose extends Command {
         type: Types.Name
       },
       role: { 
-        desc: 'Hash of the base archetype of the assingment (hash)', 
+        desc: 'ID of the base archetype of the assingment (id)', 
         value: '',
-        type: Types.Checksum
+        type: Types.Int
       },
       start_period: { 
-        desc: 'First claimable period of the assignmet (hash). Leave blank to use the current period', 
+        desc: 'First claimable period of the assignmet (id). Leave blank to use the current period', 
         value: '',
-        type: Types.Checksum,
+        type: Types.Int,
         optional: true
       },
       period_count: { 
@@ -193,9 +193,9 @@ export default class Propose extends Command {
         type: Types.String
       },
       badge: {
-        desc: 'Hash of the badge to apply for',
+        desc: 'ID of the badge to apply for',
         value: '',
-        type: Types.Checksum
+        type: Types.Int
       },
       assignee: { 
         desc: 'Account that applies for the badge (must be a member of the DAO) ', 
@@ -203,9 +203,9 @@ export default class Propose extends Command {
         type: Types.Name
       },
       start_period: { 
-        desc: 'Hash of the first claimable period of the badge assignmet. Leave blank to use the current period', 
+        desc: 'ID of the first claimable period of the badge assignmet. Leave blank to use the current period', 
         value: '',
-        type: Types.Checksum,
+        type: Types.Int,
         optional: true
       },
       period_count: { 
