@@ -147,6 +147,11 @@ export default class Propose extends Command {
         value: '',
         type: Types.Asset,
         optional: true
+      },
+      is_custom: {
+        desc: 'Specifies if the amount is custom',
+        value: '1',
+        type: Types.Int,
       }
     },
     badge: {

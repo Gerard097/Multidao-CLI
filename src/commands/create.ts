@@ -27,7 +27,8 @@ export default class Create extends Command {
   ]
 
   static examples = [
-    `$ multidao create -f config.yaml`,
+    `$ multidao create dao.yaml -a account.yaml`,
+    `$ multidao create dao.yaml -g`,
   ]
 
   // static args = [{name: 'file'}]
@@ -103,6 +104,24 @@ export default class Create extends Command {
       desc: 'Voice token decay period',
       type: Types.Int
     },
+    "skip_peg_token_create": {
+      value: 0,
+      desc: "Specify if peg (cash) token should't be created",
+      type: Types.Int,
+      optional: true
+    },
+    "skip_reward_token_create": {
+      value: 0,
+      desc: "Specify if reward (utility) token should't be created",
+      type: Types.Int,
+      optional: true
+    },
+    "core_members": {
+      value: [],
+      desc: "Account names of the core team",
+      type: Types.Group,
+      optional: true
+    }
   }
 
   checkParameters(params: any) {

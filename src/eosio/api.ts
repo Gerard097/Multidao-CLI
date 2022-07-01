@@ -1,13 +1,17 @@
 import { Params } from "../util/yaml";
 import { DGDocument } from "./document";
 
+import 'dotenv/config' 
+
 const fs = require('fs');
 const fetch = require('cross-fetch');
 const { TextDecoder, TextEncoder } = require('util');
 const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig');
 const { Api, JsonRpc } = require('eosjs')
 
-const eosEndpoint = 'https://testnet.telos.caleos.io'
+let eosEndpoint = process.env.EOSIO_ENDPOINT
+
+let contract = process.env.EOSIO_CONTRACT;
 
 function getSignatureProvider (key: string) { return new JsSignatureProvider([key]) };
 
@@ -31,6 +35,8 @@ export const Types = {
   Asset: 'asset',
   Name: 'name',
   TimePoint: 'time_point',
+  Array: "array",
+  Group: "group"
 }
 
 export const getItem = (label: string, value: any, type=Types.String) => (
@@ -48,8 +54,8 @@ export const getEdgesFromWithName = async () => {
 
   await rpc.get_table_rows({
     json: true,               // Get the response as json
-    code: 'mtdhoxhyphaa',      // Contract that we target
-    scope: 'mtdhoxhyphaa',         // Account that owns the data
+    code: contract,      // Contract that we target
+    scope: contract,         // Account that owns the data
     table: 'edges',        // Table name
     limit: 100,                // Maximum number of rows that we want to get
     reverse: false,           // Optional: Get reversed data
@@ -68,8 +74,8 @@ export const getDocuments = async ({ limit } = { limit: 100 }): Promise<any[]> =
 
     const { rows, more, next_key } = await rpc.get_table_rows({
       json: true,               // Get the response as json
-      code: 'mtdhoxhyphaa',      // Contract that we target
-      scope: 'mtdhoxhyphaa',         // Account that owns the data
+      code: contract,      // Contract that we target
+      scope: contract,         // Account that owns the data
       table: 'documents',        // Table name
       limit: 100,                // Maximum number of rows that we want to get
       reverse: false,           // Optional: Get reversed data
@@ -102,18 +108,40 @@ export const getDocumentsOfType = (type: DocumentTypes, documents: any[]) => {
 
 export const buildContentGroups = (params: Params) => {
 
+  let plainDataKeys = Object.keys(params);
+  let otherGroups: string[] = [];
+  plainDataKeys = plainDataKeys.filter(key => {
+    if (typeof params[key].value === "object") {
+      otherGroups.push(key);
+      return false;
+    }
+    else {
+      return true;
+    }
+  });
+  
   return [[
     getItem('content_group_label', 'details', Types.String),
-    ...Object.entries(params)
-          .map(([key, param]) => getItem(key, param.value, param.type))
-  ]]
+    // ...Object.entries(params)
+    //       .map(([key, param]) => getItem(key, param.value, param.type))
+    ...plainDataKeys.map(key => getItem(key, params[key].value, params[key].type))
+  ],
+  //Pseudo-hardcoded to work with unknonw elements in advance from any group
+  ...otherGroups.map(key => {
+    let iMap: { [key: string]: { value: any, type: string } } = params[key].value;
+    return [
+    getItem('content_group_label', key, Types.String),
+    ...Object.entries(iMap)
+          .map(([key, param]) =>  getItem(key, param.value, param.type))
+    ]
+  })]
 }
 
 export const runAction = (api: any, action: string, account: string, data: any) => {
 
   return api.transact({
     actions: [{
-      account: 'mtdhoxhyphaa',
+      account: contract,
       name: action,
       authorization: [{
         actor: account,
@@ -131,7 +159,7 @@ export const runActionUnauth = (api: any, action: string, data: any) => {
 
   return api.transact({
     actions: [{
-      account: 'mtdhoxhyphaa',
+      account: contract,
       name: action,
       authorization: [],
       data: data,
@@ -163,7 +191,11 @@ export const closeProposal = (api: any, closer: string, proposal_id: string) => 
   return runAction(api, 'closedocprop', closer, { proposal_id })
 }
 
-export const createDAO = (api: any, account: string, config: Params) => {
+export const createDAO = (api: any, account: string, config: Params) => {  
+
+  console.log(JSON.stringify(buildContentGroups(config), undefined, 4));
+  
+
   return runAction(api, 'createdao', account, {
     config: buildContentGroups(config)
   })
@@ -178,7 +210,8 @@ export const createProposal = (api: any,
     dao_id,
     proposer,
     proposal_type,
-    content_groups: buildContentGroups(proposal_info)
+    content_groups: buildContentGroups(proposal_info),
+    publish: true
   });
 }
 
