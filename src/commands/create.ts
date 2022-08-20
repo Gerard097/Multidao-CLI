@@ -44,6 +44,12 @@ export default class Create extends Command {
       desc: 'Title of the DAO without limited to 35 characters', 
       type: Types.String 
     },
+    "dao_url": { 
+      value: '', 
+      desc: 'Url of the dao', 
+      type: Types.String,
+      optional: true
+    },
     "dao_description": { 
       value: '', 
       desc: 'Purpuse of the DAO', 

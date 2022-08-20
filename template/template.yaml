@@ -1,0 +1,37 @@
+#Name of the DAO (use eosio "name" convention 12 characters lowecase A-Z & 0-9)
+dao_name: 
+#Title of the DAO without limited to 35 characters (alias)
+dao_title: 
+#Purpuse of the DAO
+dao_description: 
+#Voting duration of proposals (in seconds)
+voting_duration_sec: 604800
+#Peg token issued for Quests/Assignments/Contributions i.e. 1.00 HUSD
+peg_token:
+#Voice token issued for Quests/Assignments/Contributions i.e. 1.00 HVOICE
+voice_token: 1.00 VOICE
+#Reward token issued for Quests/Assignments/Contributions i.e. 1.0000 HYPHA
+reward_token:
+#Value of the Reward token in Peg tokens i.e. 1.0000 HYPHA = 8.00 HUSD so the value is set to "8.00 HUSD"
+reward_to_peg_ratio:
+#Duration of each claimable period (in seconds)
+period_duration_sec: 604800
+#Alignment required for proposals to pass
+voting_alignment_x100: 80
+#Quorum required for proposals to pass
+voting_quorum_x100: 20
+#Account used as the owner of the DAO and onboarder
+onboarder_account: 
+#Voice token decay period
+voice_token_decay_period: 604800
+#Voice token decay period
+voice_token_decay_per_period_x10M: 100000
+
+skip_peg_token_create: 0
+skip_reward_token_create: 0
+
+#Other Groups
+core_members:
+  account_0:
+      type: name
+      value: userx
